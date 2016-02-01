@@ -3,7 +3,8 @@
 For the row player, choosing $b$ dominates choosing $a$, whereas for the column player, choosing $a$ dominates choosing $b$. The pure strategy equilibirum would thus be $(b,a)$.
 
 ###4
-
+**a**
+[https://github.com/glencbz/networkedlife/blob/master/week_1/4a.png]
 **b**
 $$
 \begin{array}{c|ccc}
