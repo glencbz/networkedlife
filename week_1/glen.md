@@ -4,7 +4,7 @@ For the row player, choosing $b$ dominates choosing $a$, whereas for the column 
 
 ###4
 **a**
-[https://github.com/glencbz/networkedlife/blob/master/week_1/4a.png]
+[](https://raw.githubusercontent.com/glencbz/networkedlife/master/week_1/4a.png)
 **b**
 $$
 \begin{array}{c|ccc}
