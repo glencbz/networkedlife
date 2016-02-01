@@ -51,16 +51,16 @@ $$\begin{bmatrix}1&-0.5&-0.5
 
 $R_1 = R_1 + R_2$
 $R_2 = 2*R_2$
-$R_3 = R_3 + 1.5*R_2$
+$R_3 = R_3/1.5 + R2 $
 
 $$\begin{bmatrix}1&0&-2
 \\0&1&-3
-\\0&0&-3
+\\0&0&-2
 \end{bmatrix} \begin{bmatrix} p_1\\p_2\\p_3
-\end{bmatrix} \ge \begin{bmatrix} 0.4\\0.6\\1.2
+\end{bmatrix} \ge \begin{bmatrix} 0.4\\0.6\\0.8
 \end{bmatrix}$$
 
-$R_3 = R_3 / -3$
+$R_3 = R_3 / -2$
 $R_2 = R_2 + 3*R_3$
 $R_1 = R_1 + 2*R_3$
 
