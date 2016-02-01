@@ -1,10 +1,10 @@
-b,a. Dominating strategies
+###3
 
-$$
-p_1: \frac{2 * p_1}{0.5p_2 + 0.3} > 4\\
-p_2: \frac{2 * p_2}{0.5p_1 + 0.3} > 2
-$$
+For the row player, choosing $b$ dominates choosing $a$, whereas for the column player, choosing $a$ dominates choosing $b$. The pure strategy equilibirum would thus be $(b,a)$.
 
+###4
+
+**b**
 $$
 \begin{array}{c|ccc}
  &1&2&3\\
