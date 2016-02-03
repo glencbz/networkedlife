@@ -82,12 +82,14 @@ For the row player, choosing $b$ dominates choosing $a$, whereas for the column 
 ![](https://raw.githubusercontent.com/glencbz/networkedlife/master/week_1/4a.png)
 **b**
 $$
+p_2\\
+p_1 \quad
 \begin{array}{c|ccc}
- &1&2&3\\
+&1&2&3\\
  \hline
-1&-\infty, -1&-2, -\infty&-3, -\infty\\
+1&-\infty, -1&-\infty, -2&-\infty, -3\\
 2&-2,-\infty&-\infty, -2&-\infty, -3\\
-3&-3,-\infty&-3,-2&-2,-\infty\\
+3&-3,-\infty&-3,-2&-3,-\infty\\
 \end{array}
 $$
 
