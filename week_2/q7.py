@@ -17,6 +17,7 @@ H = numpy.matrix(H_LIST)
 H_hat = H + (1/N) * ZERO_ROW * numpy.ones(5)
 
 for theta in THETAS:
+	print "theta = " + str(theta)
 	G = theta * H_hat + (1 - theta) * (1/N) * numpy.ones((5,5))
 	pi_old = START * G
 	pi_new = pi_old * G
@@ -26,6 +27,7 @@ for theta in THETAS:
 		pi_new = pi_old * G
 		counter += 1
 	pi_list = pi_new[0].tolist()[0]
-	print counter, pi_list
-	sorted_pi_list = sorted(list(enumerate(pi_list)), key=lambda x: x[1])
-	print [el[0] for el in sorted_pi_list]
+	print "pi = " + str([round(el, 3) for el in pi_list])
+	sorted_pi_list = sorted(list(enumerate(pi_list)), key=lambda x: x[1], reverse=True)
+	print "ranking = " + str([el[0] + 1 for el in sorted_pi_list])
+	print "--------------------\n"
