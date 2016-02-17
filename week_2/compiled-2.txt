@@ -184,7 +184,7 @@ Using this initialisation, there will never be convergence, even as $k$ grows in
 Obvious solution is:
 $\pi^* = \begin{bmatrix}0.25&0.25&0.25&0.25\end{bmatrix}^T$
 
-####**Exercise 7**
+##Exercise 7
 
 ```
 from __future__ import division
