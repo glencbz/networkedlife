@@ -51,10 +51,6 @@ def build_R_hat(R_LIST, b_list):
 		for movie_offset in range(len(R_LIST[user_index])):
 			if R_hat[user_index][movie_offset] > 0:
 				R_hat[user_index][movie_offset] = average + b_list[user_index] + b_list[movie_offset + movie_base]
-	return R_hat
+	return np.matrix(R_hat)
 if __name__ == "__main__":
-	# print np.matrix(build_A(R_LIST))
-	# print build_c(R_LIST)
-	# print solve_b(build_A(R_LIST), build_c(R_LIST))
-	# print solve_b(build_A(R_LIST), build_c(R_LIST))
 	print build_R_hat(R_LIST, convert_b(solve_b(build_A(R_LIST), build_c(R_LIST))))
