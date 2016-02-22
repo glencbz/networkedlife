@@ -14,27 +14,25 @@ def generate_error_matrix(actual_matrix, pred_matrix):
 	shape = actual_matrix.shape
 	for i in range(shape[0]):
 		for j in range(shape[1]):
-			if actual_matrix[i, j] == -1.0:
+			if actual_matrix[i, j] == -1:
 				error_matrix[i, j] = -INFINITY_VALUE
 	return error_matrix
 
 
 def compute_distance(r1, r2):
-	r1_valid = []
-	r2_valid = []
 	if r1.shape != r2.shape:
 		raise Exception("compute_distance: Input shapes do not match.")
+	numerator = 0.0
+	r1_summer = 0.0
+	r2_summer = 0.0
 	for i in range(r1.shape[0]):
 		left = r1[i, 0]
 		right = r2[i, 0]
 		if left != -INFINITY_VALUE and right != -INFINITY_VALUE:
-			r1_valid.append([left])
-			r2_valid.append([right])
-	r1_m = np.matrix(r1_valid)
-	r2_m = np.matrix(r2_valid)
-	top = float(r1_m.T * r2_m)
-	bottom = float(np.linalg.norm(r1_m, 2) * np.linalg.norm(r2_m, 2))
-	return (top / bottom) if bottom != 0 else 0
+			numerator += left * right
+			r1_summer += left ** 2
+			r2_summer += right ** 2
+	return numerator / np.sqrt(r1_summer * r2_summer) if r1_summer != 0 and r2_summer != 0 else 0
 
 
 class DistanceMachine:
@@ -48,6 +46,7 @@ class DistanceMachine:
 			return self.struct[index]
 		except KeyError:
 			dist = compute_distance(self.error_matrix[:, a], self.error_matrix[:, b])
+			# print "Dist (%d, %d):" % (a, b), dist
 			self.struct[index] = dist
 			return dist
 
@@ -70,6 +69,7 @@ class NeighbourhoodMachine:
 				if j != i:
 					dists.append((j, self.dist_machine.get(i, j)))
 			dists = sorted(dists, key = lambda k: -np.abs(k[1]))
+			# print i, dists
 			self.struct[i] = dists[0:self.size]
 			return self.struct[i]
 
@@ -81,7 +81,6 @@ def neighbourhood_predict(actual_matrix, pred_matrix, size):
 	for u in range(pred_matrix.shape[0]):
 		for i in range(pred_matrix.shape[1]):
 			nbh = nbh_machine.get(i)
-			print i, nbh
 			numerator = 0.0
 			denominator = 0.0
 			for n in nbh:
