@@ -71,7 +71,6 @@ class NeighbourhoodMachine:
 					dists.append((j, self.dist_machine.get(i, j)))
 			dists = sorted(dists, key = lambda k: -np.abs(k[1]))
 			self.struct[i] = dists[0:self.size]
-			print self.struct[i]
 			return self.struct[i]
 
 
@@ -82,6 +81,7 @@ def neighbourhood_predict(actual_matrix, pred_matrix, size):
 	for u in range(pred_matrix.shape[0]):
 		for i in range(pred_matrix.shape[1]):
 			nbh = nbh_machine.get(i)
+			print i, nbh
 			numerator = 0.0
 			denominator = 0.0
 			for n in nbh:
@@ -101,7 +101,7 @@ if __name__ == "__main__":
 							   [4, -1, 5, 4, 5],
 							   [5, 3, -1, 3, 5],
 							   [3, 2, 3, 2, -1],
-							   [5, 3, 5, -1, 5],
+							   [5, 3, 4, -1, 5],
 							   [4, 2, 5, 4, -1],
 							   [5, -1, 5, 3, 4]])
 	print "Actual ratings:"
@@ -114,8 +114,8 @@ if __name__ == "__main__":
 							 [4.88, 2.96, -1, 3.56, 4.48],
 							 [3.15, 1.23, 3.03, 1.82, -1],
 							 [4.84, 2.92, 4.72, -1, 4.44],
-							 [4.84, 2.92, 4.71, 3.51, -1],
-							 [4.61, -1, 4.48, 3.29, 4.22]])
+							 [4.84, 2.92, 4.72, 3.51, -1],
+							 [4.61, -1, 4.49, 3.29, 4.22]])
 	print "Predicted ratings:"
 	print pred_matrix
 	offset_matrix = neighbourhood_predict(actual_matrix, pred_matrix, 2)
