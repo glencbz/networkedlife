@@ -6,7 +6,7 @@ import numpy as np
 from q1 import *
 
 
-INFINITY_VALUE = 1000
+INFINITY_VALUE = 100000
 
 
 def generate_error_matrix(actual_matrix, pred_matrix):
@@ -27,14 +27,14 @@ def compute_distance(r1, r2):
 	for i in range(r1.shape[0]):
 		left = r1[i, 0]
 		right = r2[i, 0]
-		if left != -1000 and right != -1000:
+		if left != -INFINITY_VALUE and right != -INFINITY_VALUE:
 			r1_valid.append([left])
 			r2_valid.append([right])
 	r1_m = np.matrix(r1_valid)
 	r2_m = np.matrix(r2_valid)
 	top = float(r1_m.T * r2_m)
-	bottom = float(np.linalg.norm(r1_m) * np.linalg.norm(r2_m))
-	return top / bottom if bottom != 0 else INFINITY_VALUE
+	bottom = float(np.linalg.norm(r1_m, 2) * np.linalg.norm(r2_m, 2))
+	return (top / bottom) if bottom != 0 else 0
 
 
 class DistanceMachine:
@@ -68,9 +68,10 @@ class NeighbourhoodMachine:
 			dists = []
 			for j in range(self.error_matrix.shape[1]):
 				if j != i:
-					dists.append((i, self.dist_machine.get(i, j)))
-			dists = sorted(dists, key = lambda k: k[1])
+					dists.append((j, self.dist_machine.get(i, j)))
+			dists = sorted(dists, key = lambda k: -np.abs(k[1]))
 			self.struct[i] = dists[0:self.size]
+			print self.struct[i]
 			return self.struct[i]
 
 
@@ -84,17 +85,37 @@ def neighbourhood_predict(actual_matrix, pred_matrix, size):
 			numerator = 0.0
 			denominator = 0.0
 			for n in nbh:
-				numerator += n[1] * error_matrix[u, i]
-				denominator += np.abs(n[1])
+				if error_matrix[u, n[0]] != -INFINITY_VALUE:
+					numerator += n[1] * error_matrix[u, n[0]]
+					denominator += np.abs(n[1])
 			offset = numerator/denominator
 			ret_matrix[u, i] = pred_matrix[u, i] + offset
 	return ret_matrix
 
+
 if __name__ == "__main__":
-	actual_matrix = np.matrix([[5, -1, 5, 4], [-1, 1, 1, 4], [4, 1, 2, 4],[3, 4, -1, 3], [1, 5, 3, -1]])
+	actual_matrix = np.matrix([[5, 4, 4, -1, 5],
+							   [-1, 3, 5, 3, 4],
+							   [5, 2, -1, 2, 3],
+							   [-1, 2, 3, 1, 2],
+							   [4, -1, 5, 4, 5],
+							   [5, 3, -1, 3, 5],
+							   [3, 2, 3, 2, -1],
+							   [5, 3, 5, -1, 5],
+							   [4, 2, 5, 4, -1],
+							   [5, -1, 5, 3, 4]])
 	print "Actual ratings:"
 	print actual_matrix
-	pred_matrix = np.matrix([[3, 5, 3, 4], [3, 5, 1, 3], [3, 3, 2, 5], [1, 1, 4, 5], [2, 5, 3, 1]])
+	pred_matrix = np.matrix([[5.0, 3.09, 4.90, -1, 4.62],
+							 [-1, 2.89, 4.69, 3.49, 4.42],
+							 [4.1, 2.19, -1, 2.78, 3.71],
+							 [-1, 1.0, 2.49, 1.29, 2.22],
+							 [4.9, -1, 4.79, 3.58, 4.51],
+							 [4.88, 2.96, -1, 3.56, 4.48],
+							 [3.15, 1.23, 3.03, 1.82, -1],
+							 [4.84, 2.92, 4.72, -1, 4.44],
+							 [4.84, 2.92, 4.71, 3.51, -1],
+							 [4.61, -1, 4.48, 3.29, 4.22]])
 	print "Predicted ratings:"
 	print pred_matrix
 	offset_matrix = neighbourhood_predict(actual_matrix, pred_matrix, 2)
