@@ -92,30 +92,36 @@ def neighbourhood_predict(actual_matrix, pred_matrix, size):
 
 
 if __name__ == "__main__":
-	actual_matrix = np.matrix([[5, 4, 4, -1, -1],
-							   [-1, 3, 5, -1, 4],
-							   [5, 2, -1, -1, 3],
-							   [-1, -1, 3, 1, 2],
-							   [4, -1, -1, 4, 5],
-							   [-1, 3, -1, 3, 5],
-							   [3, -1, 3, 2, -1],
-							   [5, -1, 4, -1, 5],
-							   [-1, 2, 5, 4, -1],
-							   [-1, -1, 5, 3, 4]])
+	# actual_matrix = np.matrix([[5, 4, 4, -1, -1],
+	# 						   [-1, 3, 5, -1, 4],
+	# 						   [5, 2, -1, -1, 3],
+	# 						   [-1, -1, 3, 1, 2],
+	# 						   [4, -1, -1, 4, 5],
+	# 						   [-1, 3, -1, 3, 5],
+	# 						   [3, -1, 3, 2, -1],
+	# 						   [5, -1, 4, -1, 5],
+	# 						   [-1, 2, 5, 4, -1],
+	# 						   [-1, -1, 5, 3, 4]])
+	actual_matrix = [[5, -1, 5, 4],
+					 [-1, 1, 1, 4],
+					 [4, 1, 2, 4],
+					 [3, 4, -1, 3],
+					 [1, 5, 3, -1]]
 	print "Actual ratings:"
 	print actual_matrix
-	pred_matrix = np.matrix([[5.0, 3.09, 4.90, -1, 4.62],
-							 [-1, 2.89, 4.69, 3.49, 4.42],
-							 [4.1, 2.19, -1, 2.78, 3.71],
-							 [-1, 1.0, 2.49, 1.29, 2.22],
-							 [4.9, -1, 4.79, 3.58, 4.51],
-							 [4.88, 2.96, -1, 3.56, 4.48],
-							 [3.15, 1.23, 3.03, 1.82, -1],
-							 [4.84, 2.92, 4.72, -1, 4.44],
-							 [4.84, 2.92, 4.72, 3.51, -1],
-							 [4.61, -1, 4.49, 3.29, 4.22]])
+	# pred_matrix = np.matrix([[5.0, 3.09, 4.90, -1, 4.62],
+	# 						 [-1, 2.89, 4.69, 3.49, 4.42],
+	# 						 [4.1, 2.19, -1, 2.78, 3.71],
+	# 						 [-1, 1.0, 2.49, 1.29, 2.22],
+	# 						 [4.9, -1, 4.79, 3.58, 4.51],
+	# 						 [4.88, 2.96, -1, 3.56, 4.48],
+	# 						 [3.15, 1.23, 3.03, 1.82, -1],
+	# 						 [4.84, 2.92, 4.72, -1, 4.44],
+	# 						 [4.84, 2.92, 4.72, 3.51, -1],
+	# 						 [4.61, -1, 4.49, 3.29, 4.22]])
+	pred_matrix = build_R_hat(actual_matrix, convert_b(solve_b(build_A(actual_matrix), build_c(actual_matrix))))
 	print "Predicted ratings:"
 	print pred_matrix
-	offset_matrix = neighbourhood_predict(actual_matrix, pred_matrix, 2)
+	offset_matrix = neighbourhood_predict(np.matrix(actual_matrix), pred_matrix, 2)
 	print "New predictions:"
 	print offset_matrix
