@@ -38,6 +38,8 @@ for lamda in reg_factors:
 abcl2 = [float(np.transpose(A*b - C) * (A*b - C)) for b in b_list]
 bl2 = [float(np.transpose(b) * (b)) for b in b_list]
 
+print b_list
+
 plt.plot(reg_factors, abcl2)
 plt.plot(reg_factors, bl2)
 plt.legend(['(Ab - c)^T(Ab - c)', 'b^T*b'])
