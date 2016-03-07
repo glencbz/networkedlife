@@ -2,14 +2,14 @@ from __future__ import division
 import numpy
 
 N = 5
-H_LIST = [[0,1,0,0,0],
-	[1,0,0,0,0],
-	[1/3,0,1/3,0,1/3],
-	[0,0,1/2,0,1/2],
-	[0,0,0,0,0]]
+H_LIST = [[0, 1, 0, 0, 0],
+	[1, 0, 0, 0, 0],
+	[1/3, 0, 1/3, 0, 1/3],
+	[0, 0, 1/2, 0, 1/2],
+	[0, 0, 0, 0, 0]]
 
-ZERO_ROW = numpy.matrix([0,0,0,0,1]).T
-THETAS = [0.1,0.3,0.5,0.85]
+ZERO_ROW = numpy.matrix([0, 0, 0, 0, 1]).T
+THETAS = [0.1, 0.3, 0.5, 0.85]
 THRESHOLD = 1E-40
 START = 1/N * numpy.ones(5)
 
@@ -18,7 +18,7 @@ H_hat = H + (1/N) * ZERO_ROW * numpy.ones(5)
 
 for theta in THETAS:
 	print "theta = " + str(theta)
-	G = theta * H_hat + (1 - theta) * (1/N) * numpy.ones((5,5))
+	G = theta * H_hat + (1 - theta) * (1/N) * numpy.ones((5, 5))
 	pi_old = START * G
 	pi_new = pi_old * G
 	counter = 0
