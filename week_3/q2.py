@@ -102,11 +102,11 @@ if __name__ == "__main__":
 	# 						   [5, -1, 4, -1, 5],
 	# 						   [-1, 2, 5, 4, -1],
 	# 						   [-1, -1, 5, 3, 4]])
-	actual_matrix = [[5, -1, 5, 4],
-					 [-1, 1, 1, 4],
-					 [4, 1, 2, 4],
-					 [3, 4, -1, 3],
-					 [1, 5, 3, -1]]
+	actual_matrix = [[5.0, -1.0, 5.0, 4.0],
+					 [-1.0, 1.0, 1.0, 4.0],
+					 [4.0, 1.0, 2.0, 4.0],
+					 [3.0, 4.0, -1.0, 3.0],
+					 [1.0, 5.0, 3.0, -1.0]]
 	print "Actual ratings:"
 	print actual_matrix
 	# pred_matrix = np.matrix([[5.0, 3.09, 4.90, -1, 4.62],
@@ -119,7 +119,7 @@ if __name__ == "__main__":
 	# 						 [4.84, 2.92, 4.72, -1, 4.44],
 	# 						 [4.84, 2.92, 4.72, 3.51, -1],
 	# 						 [4.61, -1, 4.49, 3.29, 4.22]])
-	pred_matrix = build_R_hat(actual_matrix, convert_b(solve_b(build_A(actual_matrix), build_c(actual_matrix))))
+	pred_matrix = get_r_hat(actual_matrix)
 	print "Predicted ratings:"
 	print pred_matrix
 	offset_matrix = neighbourhood_predict(np.matrix(actual_matrix), pred_matrix, 2)
