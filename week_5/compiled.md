@@ -7,44 +7,44 @@
 ##Exercise 1
 
 ####Part a
-![](https://raw.githubusercontent.com/glencbz/networkedlife/master/week_5/HW4-Q1.png)
+
+$$
+\begin{bmatrix}
+0&0&1&1&0&0&0&0\\
+0&0&0&0&1&1&0&0\\
+0&0&0&0&0&0&1&0\\
+0&0&0&0&0&0&1&0\\
+0&0&0&0&0&0&1&1\\
+0&0&0&0&0&0&0&1\\
+0&0&0&0&0&0&0&0\\
+0&0&0&0&0&0&0&0
+\end{bmatrix} 
+$$
 
 ####Part b
-$$B =
-\begin{bmatrix}1&0&1&1&1&0&1&0\\
-0&1&0&1&1&1&0&1\end{bmatrix}$$
+
+$$
+\begin{bmatrix}
+&0&0&0&0&0&0&0&0\\
+&0&0&0&0&0&0&0&0\\
+&0&0&1&1&0&0&0&0\\
+&0&0&1&1&0&0&0&0\\
+&0&0&0&0&1&1&0&0\\
+&0&0&0&0&1&1&0&0\\
+&0&0&0&0&0&0&3&2\\
+&0&0&0&0&0&0&2&3
+\end{bmatrix} 
+$$
+
+$C_{75}$ is still $0$, $C_{78}$ is now $1$, 
+The number of articles that cite both i and j.
 
 ####Part c
-$$\begin{align}
-B^TB
-&=\begin{bmatrix}1&0\\0&1\\1&0\\1&1\\1&1\\0&1\\1&0\\0&1\end{bmatrix}
-\begin{bmatrix}1&0&1&1&1&0&1&0\\
-0&1&0&1&1&1&0&1\end{bmatrix} \\
-&=\begin{bmatrix}
-1&0&1&1&1&0&1&0\\
-0&1&0&1&1&1&0&1\\
-1&0&1&1&1&0&1&0\\
-1&1&1&2&2&1&1&1\\
-1&1&1&2&2&1&1&1\\
-0&1&0&1&1&1&0&1\\
-1&0&1&1&1&0&1&0\\
-0&1&0&1&1&1&0&1
-\end{bmatrix}
-\end{align}$$
-
-$B^TB$ represents the adjacent matrix of the nodes, where $(B^TB)_{ij}$ represents the number of hyperedges that connects node $i$ with node $j$.
-
-####Part d
-$$\begin{align}
-BB^T 
-& = \begin{bmatrix}1&0&1&1&1&0&1&0\\
-0&1&0&1&1&1&0&1\end{bmatrix}\begin{bmatrix}1&0\\0&1\\1&0\\1&1\\1&1\\0&1\\1&0\\0&1\end{bmatrix} \\
-&=\begin{bmatrix}5&2\\2&5\end{bmatrix}
-\end{align}$$
-
-$BB^T$ represents the number of nodes shared between the hyperedges. $(BB^T)_{ij}$ is the number of nodes that hyperedge $i$ shares with hyperedge $j$.
+$A^3$ is all zeroes. The entries in $A^m$ represent the number of paths from i to j with length = m. Therefore there are no feasible paths of length 3.
 
 ##Exercise 2
+
+a)
 ####Degree Centrality
 $$
 \begin{array}{c|c}
@@ -160,67 +160,19 @@ $$
 \end{array}
 $$
 
-##Exercise 3
+b)
 Node 2 lies on a shortest path from node 1 to node 5
 $$\text{Betweenness centrality of node 2} = \frac{1}{5 + 3 + 3} = \frac{1}{11}$$
 
 Node 3 lies on a shortest path from node 1 to node 5
 $$\text{Betweenness centrality of node 3} = \frac{1}{5 + 2 + 1} = \frac{1}{8}$$
 
-##Exercise 4
+c)
+Number of shortest paths = 10
+$$\text{Betweenness centrality of link (3, 4)} = \frac{1}{10}$$
+$$\text{Betweenness centrality of link (2, 5)} = \frac{2}{10} = \frac{1}{5} $$
 
-```python
-from __future__ import division
-import numpy as np
-import matplotlib.pyplot as plt
-
-s0 = 0.9
-i0 = 0.1
-r0 = 0
-
-beta = 1
-gamma = 1/3
-nu = 1/50
-
-def dS(s, i, r, beta, gamma, nu):
-    return -beta * s * i + nu * r
-
-def dI(s, i, r, beta, gamma, nu):
-    return beta * s * i - gamma * i
-
-def dR(s, i, r, beta, gamma, nu):
-    return gamma * i - nu * r
-
-def step_through(s0, i0, r0, beta, gamma, nu):
-    s, i, r = s0, i0, r0
-    s_array = [s0]
-    i_array = [i0]
-    r_array = [r0]
-    t_array = [0]
-    for t in xrange(200):
-        newS = s + dS(s, i, r, beta, gamma, nu)
-        newI = i + dI(s, i, r, beta, gamma, nu)
-        newR = r + dR(s, i, r, beta, gamma, nu)
-        s, i, r = newS, newI, newR
-        s_array.append(s)
-        i_array.append(i)
-        r_array.append(r)
-        t_array.append(t + 1)
-        print "t={0} \t\ts={1} \t\ti={2} \t\tr={3}".format(round(t, 2), round(s, 2), round(i, 2), round(r, 2))
-    plt.plot(t_array, s_array)
-    plt.plot(t_array, r_array)
-    plt.plot(t_array, i_array)
-    plt.show()
-
-'''
-The values of each population fluctuate but eventually tend to constant values.
-This makes sense as each 'person' can transit from r to s to i and back to r,
-meaning that they will not accumulate in a certain segment of the populations S,I or R. 
-'''
-step_through(s0, i0, r0, beta, gamma, nu)
-```
-
-##Exercise 5
+##Exercise 3
 
 **Script**
 ```python
@@ -307,14 +259,68 @@ part2()
 8 INFECTED
 
 ####**c**
-The first seeding infects only the outer nodes in the network whereas the second infects the entire network. 
+The first seeding infects only the outer nodes in the network whereas the second infects the entire network.
 
-Since the entire network will flip if and only if there does not exist a cluster of density 0.70 (1-0.30) or higher with state-0 at initialization. 
+Since the entire network will flip if and only if there does not exist a cluster of density 0.70 (1-0.30) or higher with state-0 at initialization.
 
 In the first case, nodes 3, 4, 5, 6 form a cluster of density 0.75,
 which matches the result obtained.
 
 In the second case, nodes 4, 5, 6 forms a cluster of 0.5 instead,
 Therefore, the entire network could flip.
+
+
+##Exercise 4
+
+```python
+from __future__ import division
+import numpy as np
+import matplotlib.pyplot as plt
+
+s0 = 0.9
+i0 = 0.1
+r0 = 0
+
+beta = 1
+gamma = 1/3
+nu = 1/50
+
+def dS(s, i, r, beta, gamma, nu):
+    return -beta * s * i + nu * r
+
+def dI(s, i, r, beta, gamma, nu):
+    return beta * s * i - gamma * i
+
+def dR(s, i, r, beta, gamma, nu):
+    return gamma * i - nu * r
+
+def step_through(s0, i0, r0, beta, gamma, nu):
+    s, i, r = s0, i0, r0
+    s_array = [s0]
+    i_array = [i0]
+    r_array = [r0]
+    t_array = [0]
+    for t in xrange(200):
+        newS = s + dS(s, i, r, beta, gamma, nu)
+        newI = i + dI(s, i, r, beta, gamma, nu)
+        newR = r + dR(s, i, r, beta, gamma, nu)
+        s, i, r = newS, newI, newR
+        s_array.append(s)
+        i_array.append(i)
+        r_array.append(r)
+        t_array.append(t + 1)
+        print "t={0} \t\ts={1} \t\ti={2} \t\tr={3}".format(round(t, 2), round(s, 2), round(i, 2), round(r, 2))
+    plt.plot(t_array, s_array)
+    plt.plot(t_array, r_array)
+    plt.plot(t_array, i_array)
+    plt.show()
+
+'''
+The values of each population fluctuate but eventually tend to constant values.
+This makes sense as each 'person' can transit from r to s to i and back to r,
+meaning that they will not accumulate in a certain segment of the populations S,I or R.
+'''
+step_through(s0, i0, r0, beta, gamma, nu)
+```
 
 > Written with [StackEdit](https://stackedit.io/).
