@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>01.104 HW6 Compiled</title>
+<link rel="stylesheet" href="https://stackedit.io/res-min/themes/base.css" />
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body><div class="container"><h1 id="networked-life-hw-6">Networked Life HW 6</h1>
+
+
+
+<h5 id="glen-choo-1000472">Glen Choo 1000472</h5>
+
+
+
+<h5 id="loo-juin-1000546">Loo Juin 1000546</h5>
+
+
+
+<h5 id="tan-hao-qin-1000521">Tan Hao Qin 1000521</h5>
+
+
+
+<h2 id="question-1">Question 1</h2>
+
+<p><script type="math/tex; mode=display" id="MathJax-Element-1">
+\begin{array}{c|cccccc}
+\text{Node}&1&2&3&4&5&6 \\
+\hline
+t = 0&0&\infty&\infty&\infty&\infty&\infty \\
+t = 1&0&4&1&5&\infty&8 \\
+t = 2&0&4&1&5&6&7 
+\end{array}
+</script></p>
+
+
+
+<h2 id="question-2">Question 2</h2>
+
+<p><strong>1</strong> <br>
+Without statistical multiplexing, one assumes that all users are busy all the time. <script type="math/tex" id="MathJax-Element-2">N_d</script> is thus the maximum value of <script type="math/tex" id="MathJax-Element-3">N</script> that satisfies <script type="math/tex" id="MathJax-Element-4">N <= C</script>, i.e. <script type="math/tex" id="MathJax-Element-5">N_d = C</script>.</p>
+
+<p><strong>2</strong></p>
+
+<p>Since <script type="math/tex" id="MathJax-Element-6">N_d = C</script>, <br>
+<script type="math/tex; mode=display" id="MathJax-Element-7">P(X > C) < \gamma</script></p>
+
+<p>Using <br>
+<script type="math/tex; mode=display" id="MathJax-Element-8">
+\begin{align}
+P(X > C) &= 1 - P(X \le C)\\
+&= 1 - (\sum^C_{i=0}p^i(1 - p)^{N_s - i}
+\begin{pmatrix}N_s\\i\end{pmatrix})
+\end{align}
+</script></p>
+
+<p>We select the highest value of <script type="math/tex" id="MathJax-Element-9">N_s</script> that satisfies this relationship.</p>
+
+<p>Given <script type="math/tex" id="MathJax-Element-10">p = 0.1, \gamma = 0.01</script>, <br>
+for <script type="math/tex" id="MathJax-Element-11">C = 10,20,30</script>, <script type="math/tex" id="MathJax-Element-12">N_s = 50,  122, 301</script>. Thus <script type="math/tex" id="MathJax-Element-13">N_s</script> grows more quickly than <script type="math/tex" id="MathJax-Element-14">C</script> and a link of <script type="math/tex" id="MathJax-Element-15">2C</script> accommodates more than <script type="math/tex" id="MathJax-Element-16">2N_s</script> users.</p>
+
+<p><script type="math/tex" id="MathJax-Element-17">\sum^{N_s}_{i= N_d +1}P(X = i)</script> is the probability that the link is congested.</p>
+
+<p><strong>3</strong></p>
+
+<p>For a link of capacity <script type="math/tex" id="MathJax-Element-18">2C</script>, <script type="math/tex" id="MathJax-Element-19">N_{s2} > 2N_s</script>. This is greater than two links of capacity, <script type="math/tex" id="MathJax-Element-20">C</script> which can accommodate <script type="math/tex" id="MathJax-Element-21">N_s + N_s = 2N_s</script>.</p>
+
+
+
+<pre class="prettyprint"><code class="language-import math hljs python">
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">nCr</span><span class="hljs-params">(n, r)</span>:</span>
+    f = math.factorial
+    <span class="hljs-keyword">return</span> f(n) / f(r) / f(n-r)
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">pXC</span><span class="hljs-params">(Ns, k, p)</span>:</span>
+    <span class="hljs-keyword">return</span> (p ** k) * ((<span class="hljs-number">1</span>- p) ** (Ns - k)) * nCr(Ns, k)
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">pXgeC</span><span class="hljs-params">(Ns, C, p)</span>:</span>
+    p_masses = tuple(pXC(Ns, i, p) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">0</span>, C+<span class="hljs-number">1</span>))
+    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> - sum(p_masses)
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">computeNs</span><span class="hljs-params">(C, p, gamma)</span>:</span>
+    ns = C
+    <span class="hljs-keyword">while</span> <span class="hljs-keyword">True</span>:
+        <span class="hljs-keyword">if</span> pXgeC(ns, C, p) &gt; gamma:
+            <span class="hljs-keyword">break</span>
+        ns += <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> ns - <span class="hljs-number">1</span>
+
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">10</span>,<span class="hljs-number">20</span>,<span class="hljs-number">30</span>]:
+    <span class="hljs-keyword">print</span> computeNs(i, <span class="hljs-number">0.1</span>, <span class="hljs-number">0.01</span>)
+    <span class="hljs-comment"># 50, 122, 200</span></code></pre>
+
+
+
+<h2 id="question-3">Question 3</h2>
+
+<p><script type="math/tex; mode=display" id="MathJax-Element-22">E[n,p] = \frac{\frac{p^n}{n!}}{}</script></p>
+
+<p>Sub <script type="math/tex" id="MathJax-Element-23">tp = p</script> into Equation 1</p>
+
+
+
+<p><script type="math/tex; mode=display" id="MathJax-Element-24">e^{-t\rho}\sum^n_{k=0} (t\rho)^k / k! = \int^\infty_{tp}\frac{x^ne^{-x}}{n!}dx</script></p>
+
+<p>Sub <script type="math/tex" id="MathJax-Element-25">t\rho = \rho, tn = n</script> into <script type="math/tex" id="MathJax-Element-26">1/E[n,\rho]</script></p>
+
+
+
+<p><script type="math/tex; mode=display" id="MathJax-Element-27">\frac{1}{E[tn,t\rho]} = \frac{\sum^{tn}_{i=0}\frac{t\rho^i}{i!}}{\frac{(t\rho)^n}{(tn)!}} \\
+=\frac{(tn)!}{(t\rho)^n}e^{t\rho}\int^\infty_{tp}\frac{x^{tn}e^{-x}}{(tn)!}dx
+\\=\frac{(tn)!}{(t\rho)^n}\frac{1}{(tn)!}e^{t\rho}\int^\infty_{tp}x^{tn}e^{-x}dx
+\\=\frac{e^{t\rho}}{(t\rho)^n}\int^\infty_{tp}x^{tn}e^{-x}dx</script></p>
+
+<p>Reindex <script type="math/tex" id="MathJax-Element-28">t\rho</script> to 0</p>
+
+
+
+<p><script type="math/tex; mode=display" id="MathJax-Element-29">\frac{1}{E[tn,t\rho]}=\frac{e^{t\rho}}{(t\rho)^n}\int^\infty_0x^{tn}e^{-x}dx</script></p>
+
+<p>Integrating <script type="math/tex" id="MathJax-Element-30">x^{tn}e^{-x}</script>, we get</p>
+
+
+
+<p><script type="math/tex; mode=display" id="MathJax-Element-31">\frac{1}{E[tn,t\rho]}=\frac{e^{t\rho}}{(t\rho)^n}\Gamma(tn + 1)</script></p>
+
+<p>Since an exponential function increases at a far greater rate than a polynomial function, <script type="math/tex" id="MathJax-Element-32">\frac{e^{t\rho}}{(t\rho)^n}</script> is an increasing function.</p>
+
+<p>Since the gamma function is an increasing function as well, this implies that <script type="math/tex" id="MathJax-Element-33">\frac{1}{E[tn,t\rho]}</script> is an increasing function as well.</p>
+
+<p>As such, <script type="math/tex" id="MathJax-Element-34">E[tn,t\rho]</script> is a strictly decreasing function in <script type="math/tex" id="MathJax-Element-35">t</script>, which implies that <script type="math/tex" id="MathJax-Element-36">E[2n,2ρ] < E[n,ρ]</script>.</p>
+
+<blockquote>
+  <p>Written with <a href="https://stackedit.io/">StackEdit</a>.</p>
+</blockquote></div></body>
+</html>
